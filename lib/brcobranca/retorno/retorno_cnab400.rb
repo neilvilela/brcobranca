@@ -1,5 +1,10 @@
 # -*- encoding: utf-8 -*-
-
+#
+# DEPRECATED
+#
+# Classe original desenvolvida a partir do layout do Itau.
+# Movido para: cnab400/itau.rb
+#
 require 'parseline'
 module Brcobranca
   module Retorno
@@ -17,7 +22,6 @@ module Brcobranca
       end
 
       fixed_width_layout do |parse|
-
         # Todos os campos descritos no documento em ordem
         # :tipo_de_registro, 0..0 # identificacao do registro transacao
         # :codigo_de_inscricao, 1..2 # identificacao do tipo de inscrica/empresa
@@ -130,7 +134,6 @@ module Brcobranca
         # parse.field :indicativo_lancamento,318..318
         # parse.field :indicador_valor,319..319
         # parse.field :valor_ajuste,320..331
-
       end
     end
   end
