@@ -37,8 +37,10 @@ module Brcobranca
       attr_accessor :cedente
       # <b>REQUERIDO</b>: Documento do proprietario da conta corrente (CPF ou CNPJ)
       attr_accessor :documento_cedente
-      # <b>OPCIONAL</b>: Número sequencial utilizado para identificar o boleto
+      # <b>REQUERIDO</b>:Número utilizado para controle interno do boleto
       attr_accessor :numero_documento
+      # <b>REQUERIDO</b>: Número sequencial utilizado para identificar o boleto
+      attr_accessor :nosso_numero
       # <b>REQUERIDO</b>: Símbolo da moeda utilizada (R$ no brasil)
       attr_accessor :especie
       # <b>REQUERIDO</b>: Tipo do documento (Geralmente DM que quer dizer Duplicata Mercantil)
@@ -79,8 +81,8 @@ module Brcobranca
       attr_accessor :cedente_endereco
 
       # Validações
-      validates_presence_of :agencia, :conta_corrente, :moeda, :especie_documento, :especie, :aceite, :numero_documento, message: 'não pode estar em branco.'
-      validates_numericality_of :convenio, :agencia, :conta_corrente, :numero_documento, message: 'não é um número.', allow_nil: true
+      validates_presence_of :agencia, :conta_corrente, :moeda, :especie_documento, :especie, :aceite, :numero_documento, :nosso_numero, message: 'não pode estar em branco.'
+      validates_numericality_of :convenio, :agencia, :conta_corrente, :numero_documento, :nosso_numero, message: 'não é um número.', allow_nil: true
 
       # Nova instancia da classe Base
       # @param [Hash] campos
@@ -132,7 +134,7 @@ module Brcobranca
       # Dígito verificador do nosso número
       # @return [Integer] 1 caracteres numéricos.
       def nosso_numero_dv
-        numero_documento.modulo11_9to2
+        nosso_numero.modulo11_9to2
       end
 
       # @abstract Deverá ser sobreescrito para cada banco.

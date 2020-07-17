@@ -10,6 +10,7 @@ module Brcobranca
       validates_length_of :agencia, maximum: 4, message: 'deve ser menor ou igual a 4 dígitos.'
       validates_length_of :convenio, maximum: 7, message: 'deve ser menor ou igual a 7 dígitos.'
       validates_length_of :numero_documento, maximum: 8, message: 'deve ser menor ou igual a 8 dígitos.'
+      validates_length_of :nosso_numero, maximum: 12, message: 'deve ser menor ou igual a 12 dígitos.'
       validates_length_of :seu_numero, maximum: 7, message: 'deve ser menor ou igual a 7 dígitos.'
 
       # Nova instancia do Santander
@@ -35,10 +36,16 @@ module Brcobranca
         @convenio = valor.to_s.rjust(7, '0') if valor
       end
 
-      # Número sequencial utilizado para identificar o boleto.
+      # Número utilizado para controle interno do boleto.
       # @return [String] 8 caracteres numéricos.
       def numero_documento=(valor)
         @numero_documento = valor.to_s.rjust(8, '0') if valor
+      end
+
+      # Número sequencial utilizado para identificar o boleto.
+      # @return [String] 12 caracteres numéricos.
+      def nosso_numero=(valor)
+        @nosso_numero = valor.to_s.rjust(12, '0') if valor
       end
 
       # Número sequencial utilizado para identificar o boleto.
@@ -50,7 +57,6 @@ module Brcobranca
       # Dígito verificador do nosso número.
       # @return [String] 1 caracteres numéricos.
       def nosso_numero_dv
-        nosso_numero = self.numero_documento.to_s.rjust(12,'0') unless self.numero_documento.nil?
         nosso_numero.modulo11_santander
       end
 
@@ -59,7 +65,6 @@ module Brcobranca
       # @example
       #  boleto.nosso_numero_boleto #=> "000090002720-7"
       def nosso_numero_boleto
-        nosso_numero = numero_documento.to_s.rjust(12, '0') unless numero_documento.nil?
         "#{nosso_numero}-#{nosso_numero_dv}"
       end
 
@@ -81,7 +86,7 @@ module Brcobranca
       #
       # @return [String] 25 caracteres numéricos.
       def codigo_barras_segunda_parte
-        "9#{self.convenio}0000#{self.numero_documento}#{self.nosso_numero_dv}0#{self.carteira}"
+        "9#{self.convenio}#{self.nosso_numero}#{self.nosso_numero_dv}0#{self.carteira}"
       end
     end
   end
